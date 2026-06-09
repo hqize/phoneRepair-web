@@ -1,4 +1,3 @@
-
 spring:
   # 数据库连接配置
   datasource:
@@ -22,6 +21,7 @@ logging:
 
 # MyBatis 配置
 mybatis:
+  mapper-locations: classpath:mapper/*.xml  # XML 映射文件路径
   type-aliases-package: com.hnust.pojo  # 给 pojo 包下的类起别名（XML 中可直接用类名）
 
 # 服务配置

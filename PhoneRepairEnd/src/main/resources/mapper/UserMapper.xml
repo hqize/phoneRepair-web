@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnust.mapper.UserMapper">
+
+    <!-- 根据用户ID查询用户 -->
+    <select id="getById" resultType="com.hnust.pojo.User">
+        SELECT * FROM yjx_user WHERE user_id = #{userId}
+    </select>
+
+    <!-- 分页查询所有用户 -->
+    <select id="selectAllUser" resultType="com.hnust.pojo.User">
+        SELECT
+            user_id AS userId,
+            user_name AS userName,
+            user_email AS userEmail,
+            user_password_hash AS userPasswordHash,
+            role_id AS roleId,
+            user_bio AS userBio,
+            user_phone AS userPhone,
+            user_gender AS userGender,
+            user_last_active AS userLastActive,
+            user_created_at AS userCreatedAt,
+            user_status AS userStatus
+        FROM yjx_user
+        WHERE 1=1
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+                user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR user_email LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR user_phone LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+        ORDER BY
+        <choose>
+            <when test="sortField == 'userName'">user_name</when>
+            <when test="sortField == 'userCreatedAt'">user_created_at</when>
+            <when test="sortField == 'userLastActive'">user_last_active</when>
+            <when test="sortField == 'userStatus'">user_status</when>
+            <otherwise>user_created_at</otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder != null and sortOrder.toLowerCase() == 'asc'">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 删除用户 -->
+    <delete id="deleteUserByUserId">
+        DELETE FROM yjx_user WHERE user_id = #{userId}
+    </delete>
+
+    <!-- 更新用户 -->
+    <update id="updateUser">
+        UPDATE yjx_user
+        SET user_name = #{userName},
+            user_email = #{userEmail},
+            role_id = #{roleId},
+            user_bio = #{userBio},
+            user_phone = #{userPhone}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 根据用户ID查询密码 -->
+    <select id="selectPasswordById" resultType="string">
+        SELECT user_password_hash FROM yjx_user WHERE user_id = #{userId}
+    </select>
+
+</mapper>

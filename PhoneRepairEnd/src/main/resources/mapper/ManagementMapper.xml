@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnust.mapper.ManagementMapper">
+
+    <!-- 分页查询维修管理列表（关联维修单表+用户表） -->
+    <select id="selectAllRepairManagement" resultType="com.hnust.pojo.Management">
+        SELECT
+            rm.repair_id AS repairId,
+            rm.repair_request_id AS repairRequestId,
+            rm.technician_id AS technicianId,
+            rm.repair_price AS repairPrice,
+            rm.payment_status AS paymentStatus,
+            rm.repair_notes AS repairNotes,
+            rm.created_at AS createdAt,
+            rr.phone_model AS phoneModel,
+            CASE rr.request_status
+                WHEN 0 THEN '待维修'
+                WHEN 1 THEN '维修中'
+                WHEN 2 THEN '已完成'
+                ELSE '未知状态'
+            END AS statusName,
+            u.user_name AS userName
+        FROM yjx_repair_management rm
+        LEFT JOIN yjx_repair_request rr
+            ON rm.repair_request_id = rr.request_id
+        LEFT JOIN yjx_user u
+            ON rr.user_id = u.user_id
+        WHERE 1=1
+        AND (#{userId} IN (1,3) OR rm.technician_id = #{userId})
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+                rr.phone_model LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR rm.repair_notes LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR u.user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+        ORDER BY
+        <choose>
+            <when test="sortField == 'createdAt'">rm.created_at</when>
+            <when test="sortField == 'repairId'">rm.repair_id</when>
+            <when test="sortField == 'userName'">u.user_name</when>
+            <otherwise>rm.created_at</otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'desc'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 根据订单ID统计数量 -->
+    <select id="countByRequestId" resultType="int">
+        SELECT COUNT(1) FROM yjx_repair_request WHERE request_id = #{requestId}
+    </select>
+
+    <!-- 根据ID删除维修管理记录 -->
+    <delete id="deleteById">
+        DELETE FROM yjx_repair_management WHERE repair_id = #{repairId}
+    </delete>
+
+    <!-- 更新维修记录 -->
+    <update id="updateById">
+        UPDATE yjx_repair_management
+        SET
+            repair_price = #{repairPrice,jdbcType=DECIMAL},
+            payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            repair_notes = #{repairNotes,jdbcType=VARCHAR},
+            technician_id = #{technicianId,jdbcType=INTEGER},
+            updated_at = NOW()
+        WHERE repair_id = #{repairId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

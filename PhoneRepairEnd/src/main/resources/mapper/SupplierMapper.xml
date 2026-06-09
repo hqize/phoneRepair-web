@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnust.mapper.SupplierMapper">
+
+    <!-- 分页查询供应商管理记录 -->
+    <select id="selectSupplierByCondition" resultType="com.hnust.pojo.Supplier">
+        SELECT
+            sm.*,
+            u.user_name AS supplierName,
+            p.part_name AS partName
+        FROM yjx_supplier_management sm
+        LEFT JOIN yjx_user u ON sm.supplier_id = u.user_id AND u.role_id = 5
+        LEFT JOIN yjx_parts p ON sm.part_id = p.part_id
+        WHERE 1=1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+                CAST(sm.supplier_id AS CHAR) LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR CAST(sm.part_id AS CHAR) LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+        ORDER BY
+        <choose>
+            <when test="sortField == 'supplier_management_id'">sm.supplier_management_id</when>
+            <when test="sortField == 'supplier_id'">sm.supplier_id</when>
+            <when test="sortField == 'part_id'">sm.part_id</when>
+            <when test="sortField == 'created_at'">sm.created_at</when>
+            <otherwise>sm.created_at</otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'desc'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 根据ID删除供应商管理记录 -->
+    <delete id="deleteByManagementId">
+        DELETE FROM yjx_supplier_management WHERE supplier_management_id = #{supplierManagementId}
+    </delete>
+
+    <!-- 插入供应商管理记录 -->
+    <insert id="insert">
+        INSERT INTO yjx_supplier_management (
+            supplier_id, part_id, supply_quantity, created_at, updated_at
+        ) VALUES (
+            #{supplierId}, #{partId}, #{supplyQuantity}, #{createdAt}, #{updatedAt}
+        )
+    </insert>
+
+    <!-- 更新供应商管理记录 -->
+    <update id="updateById">
+        UPDATE yjx_supplier_management
+        SET
+            supplier_id = #{supplierId},
+            part_id = #{partId},
+            supply_quantity = #{supplyQuantity},
+            updated_at = #{updatedAt}
+        WHERE supplier_management_id = #{supplierManagementId}
+    </update>
+
+</mapper>
