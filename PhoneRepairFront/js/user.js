@@ -57,7 +57,7 @@ new Vue({
         });
 
         // 使用 Axios 发送请求到后端
-        axios.get('http://127.0.0.1:8081/hnust/user/getAllUsers', {
+        axios.get('http://127.0.0.1:9091/hnust/user/getAllUsers', {
           params: {
             userId: this.userId,
             userRole: this.userRole,
@@ -92,7 +92,7 @@ new Vue({
 
       // 新增：获取所有角色
       fetchAllRoles() {
-        return axios.get('http://127.0.0.1:8081/hnust/role/list')
+        return axios.get('http://127.0.0.1:9091/hnust/role/list')
             .then(response => {
               console.log('后端返回的角色数据:', response.data);
               // 从 response.data 中提取 data 字段（角色数组）
@@ -168,7 +168,7 @@ new Vue({
           return;
         }
 
-        axios.post('http://127.0.0.1:8081/hnust/user/updateUser', this.currentUser, {
+        axios.post('http://127.0.0.1:9091/hnust/user/updateUser', this.currentUser, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -199,7 +199,7 @@ new Vue({
         )
         .then(() => {
           // 调用后端删除接口
-          axios.delete(`http://127.0.0.1:8081/hnust/user/delete/${user.userId}`)
+          axios.delete(`http://127.0.0.1:9091/hnust/user/delete/${user.userId}`)
             .then(() => {
               this.tableData = this.tableData.filter(o => o.userId !== user.userId);
               this.$message.success('订单删除成功！');
@@ -260,7 +260,7 @@ new Vue({
           userEmail: this.newUser.userEmail,
           userPasswordHash:this.newUser.userPwd,
         };
-        axios.post('http://127.0.0.1:8081/hnust/user/createUser', newUser)
+        axios.post('http://127.0.0.1:9091/hnust/user/createUser', newUser)
             .then(() => {
               this.$message.success('用户添加成功！');
               this.fetchTableData(); // 刷新表格数据

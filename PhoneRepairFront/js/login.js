@@ -48,7 +48,7 @@ new Vue({
 
             try {
                 // 发送登录请求到后端
-                const response = await axios.post('http://localhost:8081/hnust/user/login?usernameOrEmail=' + usernameOrEmail + '&password=' + password);
+                const response = await axios.post('http://localhost:9091/hnust/user/login?usernameOrEmail=' + usernameOrEmail + '&password=' + password);
                 const data = response.data;
                 if (data.code === 200) {
                     // 登录成功，将用户信息存储到 Cookie 中

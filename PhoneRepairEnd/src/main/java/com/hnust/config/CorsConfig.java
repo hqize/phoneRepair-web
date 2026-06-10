@@ -14,7 +14,8 @@ public class CorsConfig {
         // 1. 配置跨域规则
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // 允许携带Cookie
-        config.addAllowedOriginPattern("http://127.0.0.1:8080"); // 允许前端域名（按需修改）
+        config.addAllowedOriginPattern("http://127.0.0.1:*");
+        config.addAllowedOriginPattern("http://localhost:*");
         config.addAllowedHeader("*"); // 允许所有请求头
         config.addAllowedMethod("*"); // 允许所有请求方法（GET/POST/PUT等）
 

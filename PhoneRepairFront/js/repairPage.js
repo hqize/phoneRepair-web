@@ -40,7 +40,7 @@ new Vue({
     // 获取表格数据
     fetchTableData() {
       this.loading = true; // 显示加载状态
-      axios.get('http://127.0.0.1:8081/hnust/management/getAllRepairManagement', {
+      axios.get('http://127.0.0.1:9091/hnust/management/getAllRepairManagement', {
         params: {
           userId: this.userId,
           userRole: this.userRole,
@@ -136,7 +136,7 @@ new Vue({
         return;
       }
     
-      axios.post('http://127.0.0.1:8081/hnust/management/updateRepairManagement', this.currentOrder, {
+      axios.post('http://127.0.0.1:9091/hnust/management/updateRepairManagement', this.currentOrder, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -173,7 +173,7 @@ new Vue({
             return;
           }
           axios.post(
-              'http://127.0.0.1:8081/hnust/management/deleteRepairManagement',
+              'http://127.0.0.1:9091/hnust/management/deleteRepairManagement',
               null, // post请求的第二个参数是请求体，这里传null（因为参数在URL）
               {
                 params: { // 第三个参数是配置项，params里的参数会拼到URL后
@@ -243,7 +243,7 @@ new Vue({
         repairNotes: this.newOrder.repairNotes,
         technicianId: this.userId, // 当前用户 ID
       };
-      axios.post('http://127.0.0.1:8081/hnust/management/createRepairManagement', newOrder).then(response => {
+      axios.post('http://127.0.0.1:9091/hnust/management/createRepairManagement', newOrder).then(response => {
           console.log(response.data.code );
           if (response.data.code === 200) {
             this.$message.success('订单添加成功！');

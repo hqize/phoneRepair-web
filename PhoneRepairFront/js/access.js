@@ -54,7 +54,7 @@ new Vue({
       });
 
       // 使用 Axios 发送请求到后端
-        axios.get('http://127.0.0.1:8081/hnust/parts/list', {
+        axios.get('http://127.0.0.1:9091/hnust/parts/list', {
         params: {
           userId: this.userId,
           userRole: this.userRole,
@@ -136,7 +136,7 @@ new Vue({
         return;
       }
 
-      axios.post('http://127.0.0.1:8081/hnust/parts/updatePart', this.currentPart, {
+      axios.post('http://127.0.0.1:9091/hnust/parts/updatePart', this.currentPart, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -167,7 +167,7 @@ new Vue({
       )
       .then(() => {
         // 调用后端删除接口
-        axios.delete(`http://127.0.0.1:8081/hnust/parts/delete/${part.partId}`, {
+        axios.delete(`http://127.0.0.1:9091/hnust/parts/delete/${part.partId}`, {
           withCredentials: true // 若后端 CORS 开了 setAllowCredentials(true)，必须加这行
         })
           .then(() => {
@@ -231,7 +231,7 @@ new Vue({
         stockQuantity:this.newPart.stockQuantity,
         supplierId:this.newPart.supplierId
       };
-      axios.post('http://127.0.0.1:8081/hnust/parts/addPart', newPart)
+      axios.post('http://127.0.0.1:9091/hnust/parts/addPart', newPart)
           .then(() => {
             this.$message.success('配件添加成功！');
             this.fetchTableData(); // 刷新表格数据

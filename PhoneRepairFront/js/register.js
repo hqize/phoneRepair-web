@@ -72,7 +72,7 @@ new Vue({
       try {
         // 向后端发送注册请求
         const response = await axios.post(
-          "http://localhost:8081/hnust/user/createUser",
+          "http://localhost:9091/hnust/user/createUser",
           {
             userName: username,
             userEmail: email,

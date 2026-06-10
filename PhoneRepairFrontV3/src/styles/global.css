@@ -1,0 +1,56 @@
+/* ===== 和 Vue2 前端 common.css 完全一致的按钮样式 ===== */
+.el-button {
+  border-radius: 16px !important;
+  font-size: 12px !important;
+  padding: 6px 15px !important;
+}
+.el-button--info {
+  background-color: #67C23A !important;
+  border-color: #67C23A !important;
+  color: white !important;
+}
+.el-button--info:hover {
+  background-color: #5AA72D !important;
+  border-color: #5AA72D !important;
+}
+.el-button--danger {
+  background-color: #F56C6C !important;
+  border-color: #F56C6C !important;
+  color: white !important;
+}
+.el-button--danger:hover {
+  background-color: #DD4C4C !important;
+  border-color: #DD4C4C !important;
+}
+
+/* ===== 表格统一样式 ===== */
+/* 表头不换行 */
+.el-table th > .cell {
+  white-space: nowrap !important;
+}
+/* 表格全局居中 */
+.el-table td,
+.el-table th {
+  text-align: center !important;
+}
+/* 操作列按钮强制同行 */
+.el-table__body td:last-child > .cell {
+  white-space: nowrap !important;
+}
+
+/* ===== 搜索框样式 ===== */
+.el-table .el-input {
+  margin-bottom: 15px;
+  width: 250px;
+}
+.el-table .el-input input {
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  padding: 8px 15px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+.el-table .el-input input:focus {
+  border-color: #409EFF;
+  box-shadow: 0 0 8px rgba(64, 158, 255, 0.2);
+}

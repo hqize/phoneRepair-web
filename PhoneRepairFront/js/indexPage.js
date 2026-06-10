@@ -80,7 +80,7 @@ new Vue({
             });
 
             // 使用 Axios 发送请求到后端
-            axios.get('http://127.0.0.1:8081/hnust/repair/getAllRepair', {
+            axios.get('http://127.0.0.1:9091/hnust/repair/getAllRepair', {
                 params: {
                     userId: this.userId,
                     userRole: this.userRole,
@@ -152,7 +152,7 @@ new Vue({
                 }
 
                 // 直接发送FormData，不需要额外配置
-                axios.post('http://127.0.0.1:8081/hnust/repair/deleteRepair', null, {
+                axios.post('http://127.0.0.1:9091/hnust/repair/deleteRepair', null, {
                     params:
                         {
                             repairId: order.requestId,
@@ -204,7 +204,7 @@ new Vue({
 
         fetchReceptionists() {
             // 发送 GET 请求到后端，获取所有的接待人员
-            axios.get('http://127.0.0.1:8081/hnust/repair/getAllReceptionist')
+            axios.get('http://127.0.0.1:9091/hnust/repair/getAllReceptionist')
                 .then(response => {
                     if (response.data.code === 200) {
                         // 确保正确赋值
@@ -231,7 +231,7 @@ new Vue({
         // 提交订单
         submitNewOrder() {
             // 发送请求到后端保存订单
-            axios.post('http://127.0.0.1:8081/hnust/repair/createRepair', {
+            axios.post('http://127.0.0.1:9091/hnust/repair/createRepair', {
                 userId: this.userId,
                 receptionistId: this.newOrder.receptionistId,
                 phoneModel: this.newOrder.phoneModel,

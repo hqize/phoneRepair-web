@@ -26,6 +26,6 @@ mybatis:
 
 # 服务配置
 server:
-  port: 8081  # 项目启动端口（避免与其他服务冲突）
+  port: 9091  # 项目启动端口（避免与其他服务冲突）
   servlet:
     context-path: /hnust  # 项目上下文路径（访问接口需加前缀，如 http://localhost:8081/yjx/xxx）

@@ -2,6 +2,8 @@
 
 一个基于 Spring Boot + Vue.js + Element UI 的手机维修店业务管理系统，涵盖前台接待、维修管理、配件管理、用户管理和供应商管理等核心业务模块。
 
+提供两套前端：**Vue 2 纯静态版**（传统 CDN 引入）和 **Vue 3 + TypeScript 版**（Vite 工程化构建，推荐）。
+
 ## 技术栈
 
 | 层级 | 技术 | 版本 |
@@ -10,8 +12,12 @@
 | ORM 框架 | MyBatis-Plus | 3.5.5 |
 | 数据库 | MySQL | 8.0+ |
 | 分页插件 | PageHelper | 4.1.3 |
-| 前端框架 | Vue.js | 2.x |
-| UI 组件库 | Element UI | - |
+| 前端框架（新版） | Vue 3 + TypeScript | 3.x |
+| 构建工具（新版） | Vite | 6.x |
+| UI 组件库（新版） | Element Plus | 2.x |
+| 状态管理（新版） | Pinia | 2.x |
+| 前端框架（旧版） | Vue.js | 2.x |
+| UI 组件库（旧版） | Element UI | - |
 | HTTP 客户端 | Axios | - |
 | Java 版本 | JDK | 17 |
 | 构建工具 | Maven | - |
@@ -74,7 +80,50 @@ phoneRepair/
 │       │   └── Md5Password.java    # MD5 加盐加密
 │       └── handler/
 │           └── GlobalExceptionHandler.java # 全局异常处理
-├── PhoneRepairFront/              # 前端页面（纯静态）
+├── PhoneRepairFrontV3/            # 前端（新版 Vue 3 + TS）
+│   ├── index.html                 # 入口 HTML
+│   ├── vite.config.ts             # Vite 配置（代理、别名）
+│   ├── package.json               # 依赖管理
+│   ├── tsconfig.json              # TypeScript 配置
+│   └── src/
+│       ├── main.ts                # 应用入口
+│       ├── App.vue                # 根组件
+│       ├── types/                 # TypeScript 类型定义
+│       │   ├── api.ts             # API 响应类型
+│       │   ├── user.ts            # 用户类型
+│       │   ├── repair.ts          # 维修单类型
+│       │   ├── management.ts      # 维修管理类型
+│       │   ├── parts.ts           # 配件类型
+│       │   ├── supplier.ts        # 供应商类型
+│       │   └── role.ts            # 角色类型
+│       ├── api/                   # API 请求模块
+│       │   ├── request.ts         # Axios 实例 + 拦截器
+│       │   ├── user.ts            # 用户 API
+│       │   ├── repair.ts          # 维修单 API
+│       │   ├── management.ts      # 维修管理 API
+│       │   ├── parts.ts           # 配件 API
+│       │   ├── supplier.ts        # 供应商 API
+│       │   └── role.ts            # 角色 API
+│       ├── stores/                # Pinia 状态管理
+│       │   └── user.ts            # 用户状态（localStorage 持久化）
+│       ├── router/                # Vue Router 路由
+│       │   └── index.ts           # 路由表 + 导航守卫
+│       ├── layouts/               # 布局组件
+│       │   └── DefaultLayout.vue  # 主布局（导航栏 + 轮播图）
+│       ├── views/                 # 页面组件
+│       │   ├── LoginView.vue      # 登录页
+│       │   ├── RegisterView.vue   # 注册页
+│       │   ├── ReceptionView.vue  # 前台接待
+│       │   ├── RepairManagementView.vue  # 维修管理
+│       │   ├── PartsView.vue      # 配件查询
+│       │   ├── UserManagementView.vue    # 账号管理
+│       │   └── SupplierView.vue   # 供应商管理
+│       ├── composables/           # 可组合函数
+│       │   ├── useTable.ts        # 表格分页/搜索/排序通用逻辑
+│       │   └── useCaptcha.ts      # 画布验证码
+│       └── styles/                # 全局样式
+│           └── global.css         # Element Plus 覆盖样式
+├── PhoneRepairFront/              # 前端（旧版 Vue 2 纯静态）
 │   ├── index.html                 # 主页面（含导航栏、轮播图）
 │   ├── page/                      # 子页面
 │   │   ├── login.html             # 登录页
@@ -125,7 +174,7 @@ phoneRepair/
 
 ## API 接口列表
 
-基础路径：`http://localhost:8081/hnust`
+基础路径：`http://localhost:9091/hnust`
 
 ### 用户模块 `/user`
 
@@ -201,21 +250,48 @@ phoneRepair/
 - **密码加密**：使用 MD5 + 盐值混合加密存储（[Md5Password.java](PhoneRepairEnd/src/main/java/com/hnust/util/Md5Password.java)）
 - **删除操作二次验证**：维修单删除、维修管理删除、供应商记录删除均需输入密码确认
 - **角色权限控制**：通过 SQL WHERE 条件在 Mapper 层实现基于 roleId 的数据访问隔离
-- **前后端分离**：后端端口 8081，前端端口 8080，通过 CORS 配置实现跨域通信
+- **前后端分离**：后端端口 9091，Vue 3 前端端口 5173（Vite），Vue 2 前端端口 9000（live-server），通过 CORS 通配 `http://127.0.0.1:*` / `http://localhost:*` 实现跨域通信
 
 ## 运行配置
 
 ### 后端配置（application.yml）
 
-- 服务端口：`8081`
+- 服务端口：`9091`
 - 上下文路径：`/hnust`
 - 数据库：`jdbc:mysql://localhost:3306/phone_repair`
 - 数据库用户：`root` / `123456`
 - MyBatis 日志级别：`com.hnust.mapper` → `trace`
+- CORS：[CorsConfig.java](PhoneRepairEnd/src/main/java/com/hnust/config/CorsConfig.java) 使用 `addAllowedOriginPattern` 通配本地端口
 
 ### 启动步骤
 
 1. 创建 MySQL 数据库 `phone_repair`，导入对应的表结构
 2. 修改 [application.yml](PhoneRepairEnd/src/main/resources/application.yml) 中的数据库连接信息
-3. 运行 [PhoneRepairEndApplication.java](PhoneRepairEnd/src/main/java/com/hnust/PhoneRepairEndApplication.java) 启动后端
-4. 使用 Live Server 或任意 HTTP 服务器启动前端页面（默认端口 8080）
+3. 运行 [PhoneRepairEndApplication.java](PhoneRepairEnd/src/main/java/com/hnust/PhoneRepairEndApplication.java) 启动后端（端口 9091）
+
+#### Vue 3 前端（推荐）
+
+```bash
+cd PhoneRepairFrontV3
+npm install
+npm run dev
+```
+
+访问 `http://localhost:5173`。Vite 自动代理 `/hnust` 请求到后端 9091 端口。
+
+#### Vue 2 前端（旧版）
+
+```bash
+cd PhoneRepairFront
+live-server --port=9000
+```
+
+> **Windows 用户注意**：端口 8080 被 Hyper-V/WinNAT 保留（范围 8052–8151），无法使用。请用 `--port=9000` 或其他范围外端口。
+
+## 已知问题
+
+### Edge 浏览器无法最小化窗口
+
+**原因**：Vue Router 4.6+ 的 `beforeUnloadListener` 在页面 `hidden` 状态下调用 `history.replaceState()` 保存滚动位置时，Microsoft Edge 会错误触发窗口 `focus` 事件，导致最小化后窗口立即弹回。详见 [vuejs/router#2644](https://github.com/vuejs/router/issues/2644)。
+
+**修复**：已在 [router/index.ts](PhoneRepairFrontV3/src/router/index.ts) 中通过 monkey-patch 拦截 Edge 下隐藏状态时的 `replaceState` 调用，此问题不影响 Chrome/Firefox。

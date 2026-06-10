@@ -104,7 +104,7 @@ new Vue({
 
         fetchTableData() {
             this.loading = true;
-            axios.get(`http://127.0.0.1:8081/hnust/supplier/getAllSupplierManagement`, {
+            axios.get(`http://127.0.0.1:9091/hnust/supplier/getAllSupplierManagement`, {
                 params: {
                     searchKeyword: this.searchKeyword,
                     pageNum: this.pageNum,
@@ -178,7 +178,7 @@ new Vue({
                         ...this.newSupplier,
                         supplyQuantity: Number(this.newSupplier.supplyQuantity)
                     };
-                    axios.post(`http://127.0.0.1:8081/hnust/supplier/createSupplierManagement`, dataToSubmit)
+                    axios.post(`http://127.0.0.1:9091/hnust/supplier/createSupplierManagement`, dataToSubmit)
                         .then(response => {
                             if (response.data.code === 200) {
                                 this.$message.success('新增供应记录成功！');
@@ -210,7 +210,7 @@ new Vue({
                         ...this.currentSupplier,
                         supplyQuantity: Number(this.currentSupplier.supplyQuantity)
                     };
-                    axios.post(`http://127.0.0.1:8081/hnust/supplier/updateSupplierManagement`, dataToSubmit)
+                    axios.post(`http://127.0.0.1:9091/hnust/supplier/updateSupplierManagement`, dataToSubmit)
                         .then(response => {
                             if (response.data.code === 200) {
                                 this.$message.success('修改供应记录成功！');
@@ -246,7 +246,7 @@ new Vue({
                     }
 
                     axios.post(
-                        `http://127.0.0.1:8081/hnust/supplier/deleteSupplierManagement`,
+                        `http://127.0.0.1:9091/hnust/supplier/deleteSupplierManagement`,
                         null,
                         {
                             params: {
